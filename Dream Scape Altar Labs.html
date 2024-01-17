@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Scape</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Ajout de styles pour rendre les chiffres visibles */
+        #progressContainer {
+            position: relative;
+        }
+
+        #progressLabels {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            width: 100%;
+            top: 25px; /* Ajustez selon vos besoins */
+            margin-bottom: 60px; /* Ajustez l'espace en bas des graduations */
+        }
+
+        #progressLabels div {
+            width: 9%; /* Ajustez selon vos besoins */
+            text-align: center;
+        }
+        
+        #validateButton {
+            display: none;
+            margin-top: 40px; /* Espacement sous la barre de progression */
+        }
+
+        #messageContainer {
+            margin-top: 10px; /* Ajout d'une marge au-dessus du message */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Dream Scape</h1>
+    </header>
+
+    <section>
+        <h2>Sorry our website is currently under construction</h2>
+        <p>Log in restricted to authorised individuals</p>
+
+        <!-- Formulaire pour saisir un nom d'utilisateur -->
+        <form id="userForm">
+            <label for="username">Username :</label>
+            <input type="text" id="username" name="username" required>
+
+            <!-- Bouton pour soumettre le formulaire -->
+            <button type="button" onclick="verifierUsername()">submit</button>
+        </form>
+
+        <!-- Container pour afficher le message -->
+        <div id="progressContainer" style="display: none;">
+            <input type="range" id="progress" name="progress" min="0" max="100" step="10" value="0" style="width: 100%;">
+            <!-- Labels pour les positions de la barre de progression -->
+            <div id="progressLabels">
+                <div>0</div><div>10</div><div>20</div><div>30</div><div>40</div><div>50</div><div>60</div><div>70</div><div>80</div><div>90</div><div>100</div>
+            </div>
+
+            <!-- Bouton pour valider le réglage de la fréquence -->
+            <button id="validateButton" onclick="validerFrequence()">Validate frequency setting</button>
+            
+            <!-- Container pour afficher le message -->
+            <div id="messageContainer"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; Altar Labs. Tous droits réservés.</p>
+    </footer>
+
+    <!-- JavaScript -->
+<script>
+    var essaisRestants = 3;
+
+    function verifierUsername() {
+        var usernameInput = document.getElementById("username");
+        var username = usernameInput.value;
+        var progressContainer = document.getElementById("progressContainer");
+        var validateButton = document.getElementById("validateButton");
+        var progressInput = document.getElementById("progress");
+        var messageContainer = document.getElementById("messageContainer");
+
+        if (username === "barb6") {
+            // Afficher la barre de progression et le bouton pour valider le réglage de la fréquence
+            progressContainer.style.display = "block";
+            validateButton.style.display = "inline-block";
+            // Effacer le message d'erreur s'il existe
+            messageContainer.innerHTML = "";
+        } else {
+            // Masquer la barre de progression et le bouton si le nom d'utilisateur est incorrect
+            progressContainer.style.display = "none";
+            validateButton.style.display = "none";
+            // Afficher un message d'erreur en rouge sous la ligne "Log in restricted to authorised individuals"
+            messageContainer.innerHTML = "<p style='color: red;'>Wrong username.</p>";
+        }
+    }
+
+    function validerFrequence() {
+        var progressInput = document.getElementById("progress");
+        var messageContainer = document.getElementById("messageContainer");
+
+        // Vérifier si la barre est réglée sur 70
+        if (parseInt(progressInput.value) === 70) {
+            messageContainer.innerHTML = "<p>Vous avez gagné la clé 1: Bulle! Soyez le premier à vous rendre au bar avec les 3 clés pour remporter le jeu!</p>";
+        } else {
+            // Réduire le nombre d'essais restants et afficher un message
+            essaisRestants--;
+            messageContainer.innerHTML = "<p>Wrong setting. Remaining tests : " + essaisRestants + "</p>";
+
+            // Masquer la barre de progression et le bouton si le nombre d'essais est épuisé
+            if (essaisRestants === 0) {
+                messageContainer.innerHTML = "<p>Perdu!</p>";
+                progressContainer.style.display = "none";
+                validateButton.style.display = "none";
+                // Appliquer le blackout
+                document.body.innerHTML = "<div class='blackout'><h1>Perdu!</h1></div>";
+            }
+        }
+    }
+</script>
+
+
+</body>
+</html>
